@@ -6,4 +6,5 @@ export default interface PostAttributes {
   createdAt: string;
   updatedAt: string;
   tags: string[];
+  active: boolean;
 }

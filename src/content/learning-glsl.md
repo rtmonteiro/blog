@@ -9,6 +9,7 @@ tags:
   - glsl
   - math
   - learning
+active: true
 ---
 
 # Learning Math from a new perspective

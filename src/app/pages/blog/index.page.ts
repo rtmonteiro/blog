@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ContentFile, injectContentFiles } from '@analogjs/content';
+import { DateTime } from 'luxon';
 
 import PostAttributes from '../../post-attributes';
 
@@ -16,7 +17,7 @@ import PostAttributes from '../../post-attributes';
       <a [routerLink]="['/blog/', post.attributes.slug]">
         <article class="card">
           <header>
-            <time>{{ post.attributes.createdAt }}</time>
+            <time class="card__time">{{ post.attributes.relativeDate }}</time>
             <h2 class="card__title">{{ post.attributes.title }}</h2>
           </header>
           <img class="card__cover-image" [src]="post.attributes.coverImage" [alt]="post.attributes.title" />
@@ -33,25 +34,56 @@ import PostAttributes from '../../post-attributes';
       text-align: left;
       display: block;
       margin-bottom: 2rem;
+      color: whitesmoke;
+      &:hover {
+        h2, p {
+          transition: color 150ms;
+          color: grey;
+        }
+        img {
+          transition: filter 150ms;
+          filter: grayscale(100%);
+        }
+      }
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1rem;
+
+      .card__desc {
+        font-weight: bold;
+      }
+
+      .card__cover-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
     }
 
-    .card__cover-image {
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-    }
   `,
 })
 export default class BlogComponent {
 
   sortPosts = (a: ContentFile<PostAttributes>, b: ContentFile<PostAttributes>) => {
-      return new Date(b.attributes.createdAt).getTime() - new Date(a.attributes.createdAt).getTime();
-    };
-  readonly posts = injectContentFiles<PostAttributes>().sort(this.sortPosts);
+    return new Date(b.attributes.createdAt).getTime() - new Date(a.attributes.createdAt).getTime();
+  };
+  readonly posts = injectContentFiles<PostAttributes>()
+    .filter((post) => post.attributes.active)
+    .sort(this.sortPosts)
+    .map((post) => {
+      return {
+        ...post,
+        attributes: {
+          ...post.attributes,
+          relativeDate: this.getHowLongHasBeenCreated(post.attributes.createdAt),
+        },
+      };
+    });
+
+  getHowLongHasBeenCreated(date: string) {
+    return DateTime.fromISO(date).toRelative({ locale: 'en' });
+  }
 }
