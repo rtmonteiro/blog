@@ -17,7 +17,9 @@ import PostAttributes from '../../post-attributes';
           <span class="post__tag">{{ tag }}</span>
         }
       </div>
-      <analog-markdown [content]="post.content" />
+      <div class="post__content">
+        <analog-markdown [content]="post.content" />
+      </div>
     </article>
     }
   `,
@@ -31,6 +33,12 @@ import PostAttributes from '../../post-attributes';
     }
     .post__image {
       max-height: 40vh;
+    }
+    .post__content {
+      max-width: 800px;
+      width: 95%;
+      min-width: 300px;
+      margin: 0 auto;
     }
   `,
 })

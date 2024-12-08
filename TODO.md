@@ -6,3 +6,4 @@
 - [ ] Add a search bar
 - [ ] Add a filter for tags
 - [ ] Add a light mode
+- [X] Fix responsive design of the post page
