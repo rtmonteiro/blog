@@ -12,11 +12,23 @@ import PostAttributes from '../../post-attributes';
     @if (post$ | async; as post) {
     <article>
       <img class="post__image" [src]="post.attributes.coverImage" />
+      <div class="post__tags">
+        @for (tag of post.attributes.tags; track $index) {
+          <span class="post__tag">{{ tag }}</span>
+        }
+      </div>
       <analog-markdown [content]="post.content" />
     </article>
     }
   `,
   styles: `
+    .post__tag {
+      margin-right: 0.5rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 0.25rem;
+      background-color: #f0f0f0;
+      color: #333;
+    }
     .post__image {
       max-height: 40vh;
     }
