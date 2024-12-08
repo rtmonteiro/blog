@@ -12,7 +12,7 @@ import PostAttributes from '../../post-attributes';
   template: `
     <h1>My Blogecito</h1>
 
-    <div class="cards">
+    <section class="cards">
       @for (post of posts ; track post.attributes.slug) {
       <a [routerLink]="['/blog/', post.attributes.slug]">
         <article class="card">
@@ -27,30 +27,40 @@ import PostAttributes from '../../post-attributes';
         </article>
       </a>
       }
-    </div>
+    </section>
+
+    <footer>
+      <p>
+        There {{ posts.length > 1
+          ? 'are ' + posts.length + ' posts'
+          : 'is ' + posts.length + ' post' }}
+        </p>
+      <p>Made with ❤️ by <a href="https://github.com/rtmonteiro" target="_blank">Ryan Monteiro</a></p>
+    </footer>
   `,
   styles: `
-    a {
-      text-align: left;
-      display: block;
-      margin-bottom: 2rem;
-      color: whitesmoke;
-      &:hover {
-        h2, p {
-          transition: color 150ms;
-          color: grey;
-        }
-        img {
-          transition: filter 150ms;
-          filter: grayscale(100%);
-        }
-      }
-    }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 1rem;
+
+      a {
+        text-align: left;
+        display: block;
+        margin-bottom: 2rem;
+        color: whitesmoke;
+        &:hover {
+          h2, p {
+            transition: color 150ms;
+            color: grey;
+          }
+          img {
+            transition: filter 150ms;
+            filter: grayscale(100%);
+          }
+        }
+      }
 
       .card__desc {
         font-weight: bold;
@@ -60,6 +70,12 @@ import PostAttributes from '../../post-attributes';
         width: 100%;
         height: 200px;
         object-fit: cover;
+      }
+    }
+
+    footer {
+      a {
+        display: inline;
       }
     }
 
